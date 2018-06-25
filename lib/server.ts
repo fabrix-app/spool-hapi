@@ -1,4 +1,4 @@
-const path = require('path')
+import { relative, join } from 'path'
 
 export const Server = {
 
@@ -36,7 +36,7 @@ export const Server = {
     if (app.config.get('main.paths.www')) {
       if (Array.isArray(app.config.get('main.paths.www'))) {
         app.config.get('main.paths.www').map(item => {
-          const staticDir = path.relative(app.config.get('main.paths.root'), item.path)
+          const staticDir = relative(app.config.get('main.paths.root'), item.path)
           server.route({
             method: 'GET',
             path: item.humanUrl ?
@@ -44,20 +44,20 @@ export const Server = {
               '/'.concat(staticDir.replace(/\\/g, '/'), '/{filename*}'),
             handler: {
               file: function(request) {
-                return path.join(staticDir, request.params.filename)
+                return join(staticDir, request.params.filename)
               }
             }
           })
         })
       }
       else {
-        const staticDir = path.relative(app.config.get('main.paths.root'), app.config.get('main.paths.www'))
+        const staticDir = relative(app.config.get('main.paths.root'), app.config.get('main.paths.www'))
         server.route({
           method: 'GET',
           path: '/'.concat(staticDir.replace(/\\/g, '/'), '/{filename*}'),
           handler: {
             file: function(request) {
-              return path.join(staticDir, request.params.filename)
+              return join(staticDir, request.params.filename)
             }
           }
         })

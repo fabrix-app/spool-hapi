@@ -1,1 +1,1 @@
-exports.webConfig = require('./webconfig')
+export { webConfig } from './webconfig'

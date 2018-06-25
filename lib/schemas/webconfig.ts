@@ -1,6 +1,6 @@
-const joi = require('joi')
+import * as joi from 'joi'
 
-module.exports = joi.object().keys({
+export const webConfig = joi.object().keys({
   port: joi.number().integer().positive().required(),
   host: joi.string(),
   plugins: joi.array().optional(),

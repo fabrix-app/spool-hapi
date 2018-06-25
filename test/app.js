@@ -1,16 +1,20 @@
 const smokesignals = require('smokesignals')
+const _ = require('lodash')
 const Model = require('@fabrix/fabrix/dist/common').FabrixModel
 
 const App = Object.assign(smokesignals.FailsafeConfig, {
   pkg: {
-    name: 'hapi-spool-test'
+    name: '@fabrix/spool-hapi-test',
+    version: '1.0.0'
   },
   api: {
     models: {
       User: class User extends Model {
         static config (app, Sequelize) {
           return {
-            store: 'teststore'
+            options: {
+
+            }
           }
         }
         static schema (app, Sequelize) {
@@ -34,14 +38,19 @@ const App = Object.assign(smokesignals.FailsafeConfig, {
       Role: class Role extends Model {
         static config (app, Sequelize) {
           return {
-            store: 'teststore'
+            options: {
+
+            }
           }
         }
         static schema (app, Sequelize) {
           return {
-            name: Sequelize.STRING
+            name: {
+              type: Sequelize.STRING
+            }
           }
         }
+
         associate(models) {
           models.Role.belongsTo(models.User, {
             onDelete: 'CASCADE',
@@ -55,13 +64,18 @@ const App = Object.assign(smokesignals.FailsafeConfig, {
   },
   config: {
     stores: {
-      teststore: {
+      sqlitedev: {
+        orm: 'sequelize',
         database: 'dev',
         storage: './.tmp/dev.sqlite',
         host: '127.0.0.1',
         dialect: 'sqlite',
         migrate: 'drop'
       }
+    },
+    models: {
+      defaultStore: 'sqlitedev',
+      migrate: 'drop'
     },
     tapestries: {
       controllers: true,
@@ -97,9 +111,10 @@ const App = Object.assign(smokesignals.FailsafeConfig, {
     },
     routes: [ ],
     log: {
-      logger: new smokesignals.Logger('error')
+      logger: new smokesignals.Logger('debug')
     }
   }
 })
 
+_.defaultsDeep(App, smokesignals.FailsafeConfig)
 module.exports = App

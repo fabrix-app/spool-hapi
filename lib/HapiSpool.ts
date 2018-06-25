@@ -1,8 +1,7 @@
-const Hapi = require('hapi')
-const lib = require('./index')
-
 import { ServerSpool } from '@fabrix/fabrix/dist/common/spools/server'
+import * as Hapi from 'hapi'
 import { Server } from './server'
+import { Validator } from './validator'
 
 import * as config from './config/index'
 import * as pkg from '../package.json'
@@ -32,9 +31,14 @@ export class HapiSpool extends ServerSpool {
    * Ensure that config/web is valid, and that no other competing web
    * server spools are installed (e.g. express)
    */
-  validate () {
+  async validate () {
+    // return Validator.validateWebConfig(this.app.config.web)
+    const requiredSpools = ['router']
+    const spools = Object.keys(this.app.config.get('main.spools'))
 
-    // return lib.Validator.validateWebConfig(this.app.config.web)
+    if (requiredSpools.some(v => spools.indexOf(v) >= 0)) {
+      return Promise.reject(new Error(`spool-hapi requires spools: ${ requiredSpools.join(', ') }!`))
+    }
   }
 
   configure () {
@@ -65,7 +69,9 @@ export class HapiSpool extends ServerSpool {
   }
 
   async unload () {
-    this.server.stop()
+    if (this.server) {
+      this.server.stop()
+    }
   }
 }
 
