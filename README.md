@@ -155,7 +155,7 @@ information on how our projects are organized and how to get started.
 
 [npm-image]: https://img.shields.io/npm/v/@fabrix/spool-hapi.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/@fabrix/spool-hapi
-[ci-image]: https://img.shields.io/circleci/project/github/fabrix-app/spool-hapi/nmaster.svg
+[ci-image]: https://img.shields.io/circleci/project/github/fabrix-app/spool-hapi/master.svg
 [ci-url]: https://circleci.com/gh/fabrix-app/spool-hapi/tree/master
 [daviddm-image]: http://img.shields.io/david/fabrix-app/spool-hapi.svg?style=flat-square
 [daviddm-url]: https://david-dm.org/fabrix-app/spool-hapi
