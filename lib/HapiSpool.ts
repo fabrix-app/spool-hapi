@@ -16,7 +16,7 @@ import * as api  from './api/index'
  * Bind application routes to Hapi.js (from spool-router)
  */
 export class HapiSpool extends ServerSpool {
-  public server: Hapi
+  public server
   public serverConfig
 
   constructor(app) {
@@ -58,12 +58,11 @@ export class HapiSpool extends ServerSpool {
    */
   async initialize () {
     this.server = new Hapi.Server(this.serverConfig)
-    const { server, app } = this
 
-    await Server.registerPlugins(server, app)
-    Server.registerRoutes(server, app)
-    Server.registerViews(server, app)
-    Server.registerExtensions(server, app)
+    await Server.registerPlugins(this.server, this.app)
+    Server.registerRoutes(this.server, this.app)
+    Server.registerViews(this.server, this.app)
+    Server.registerExtensions(this.server, this.app)
     await this.server.start()
 
     this.app.emit('webserver:http:ready', this.server.listener)
