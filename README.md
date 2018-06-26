@@ -2,12 +2,18 @@
 
 [![Gitter][gitter-image]][gitter-url]
 [![NPM version][npm-image]][npm-url]
-[![Build status][ci-image]][ci-url]
+[![Build Status][ci-image]][ci-url]
+[![Test Coverage][coverage-image]][coverage-url]
 [![Dependency Status][daviddm-image]][daviddm-url]
-[![Code Climate][codeclimate-image]][codeclimate-url]
+[![Follow @fabrix-app on Twitter][twitter-image]][twitter-url]
 
 Hapi spool. This pack binds the routes compiled in [spool-router](https://github.com/fabrix-app/spool-router)
 to a [Hapi Server](http://hapijs.com/api#server).
+
+## Install
+```sh
+$ npm install @fabrix/spool-hapi --save
+```
 
 ## Usage
 Load in your spool config.
@@ -17,8 +23,8 @@ Load in your spool config.
 module.exports = {
   // ...
   spools: [
-    require('spool-router'),
-    require('spool-hapi')
+    require('@fabrix/spool-router').RouterSpool,
+    require('@fabix/spool-hapi').HapiSpool
   ]
 }
 ```
@@ -158,3 +164,5 @@ information on how our projects are organized and how to get started.
 [codeclimate-url]: https://codeclimate.com/github/fabrix-app/spool-hapi
 [gitter-image]: http://img.shields.io/badge/+%20GITTER-JOIN%20CHAT%20%E2%86%92-1DCE73.svg?style=flat-square
 [gitter-url]: https://gitter.im/fabrix-app/fabrix
+[twitter-image]: https://img.shields.io/twitter/follow/fabrix-app.svg?style=social
+[twitter-url]: https://twitter.com/fabrix-app
