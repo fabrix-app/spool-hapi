@@ -1,5 +1,6 @@
-import * as _ from 'lodash'
 import * as Boom from 'boom'
+
+import { extend } from 'lodash'
 
 import { FabrixController as Controller } from '@fabrix/fabrix/dist/common'
 
@@ -26,6 +27,20 @@ export class TapestryController extends Controller {
       'options =', options)
 
     return TapestryService.create(request.params.model, request.payload, options)
+      .then(elements => {
+        return elements || {}
+      })
+      .catch(error => {
+        if (error.code === 'E_VALIDATION') {
+          return Boom.badRequest(error.code)
+        }
+        else if (error.code === 'E_NOT_FOUND') {
+          return Boom.notFound(error.code)
+        }
+        else {
+          return Boom.badImplementation(error.code)
+        }
+      })
   }
 
   /**
@@ -51,10 +66,20 @@ export class TapestryController extends Controller {
     return response
       .then(result => {
         if (!result) {
-          return Boom.notFound()
+          return Boom.notFound('E_NOT_FOUND')
         }
-
         return result
+      })
+      .catch(error => {
+        if (error.code === 'E_VALIDATION') {
+          return Boom.badRequest(error.code)
+        }
+        else if (error.code === 'E_NOT_FOUND') {
+          return Boom.notFound(error.code)
+        }
+        else {
+          return Boom.badImplementation(error.code)
+        }
       })
   }
 
@@ -66,17 +91,31 @@ export class TapestryController extends Controller {
     const options = this.app.spools.hapi.getOptionsFromQuery(request.query)
     const criteria = this.app.spools.hapi.getCriteriaFromQuery(request.query)
     const params = request.params
+    let res
 
     this.log.debug('[TapestryController] (update) model =',
     request.params.model, ', criteria =', request.query, request.params.id,
       ', values = ', request.payload)
 
     if (request.params.id) {
-      return TapestryService.update(params.model, params.id, request.payload, options)
+      res = TapestryService.update(params.model, params.id, request.payload, options)
     }
     else {
-      return TapestryService.update(params.model, criteria, request.payload, options)
+      res = TapestryService.update(params.model, criteria, request.payload, options)
     }
+
+    return res
+    .catch(error => {
+      if (error.code === 'E_VALIDATION') {
+        return Boom.badRequest(error.code)
+      }
+      else if (error.code === 'E_NOT_FOUND') {
+        return Boom.notFound(error.code)
+      }
+      else {
+        return Boom.badImplementation(error.code)
+      }
+    })
   }
 
   /**
@@ -86,16 +125,35 @@ export class TapestryController extends Controller {
     const TapestryService = this.app.services.TapestryService
     const options = this.app.spools.hapi.getOptionsFromQuery(request.query)
     const criteria = this.app.spools.hapi.getCriteriaFromQuery(request.query)
+    let res
 
     this.log.debug('[TapestryController] (destroy) model =',
       request.params.model, ', query =', request.query)
 
     if (request.params.id) {
-      return TapestryService.destroy(request.params.model, request.params.id, options)
+      res = TapestryService.destroy(request.params.model, request.params.id, options)
+        .then(result => {
+          return result || {}
+        })
     }
     else {
-      return TapestryService.destroy(request.params.model, criteria, options)
+      res = TapestryService.destroy(request.params.model, criteria, options)
+        .then(result => {
+          return result || {}
+        })
     }
+
+    return res.catch(error => {
+      if (error.code === 'E_VALIDATION') {
+        return Boom.badRequest(error.code)
+      }
+      else if (error.code === 'E_NOT_FOUND') {
+        return Boom.notFound(error.code)
+      }
+      else {
+        return Boom.badImplementation(error.code)
+      }
+    })
   }
 
   /**
@@ -114,6 +172,17 @@ export class TapestryController extends Controller {
       'options =', options)
 
     return TapestryService.createAssociation(parentModel, parentId, childAttribute, payload, options)
+      .catch(error => {
+        if (error.code === 'E_VALIDATION') {
+          return Boom.badRequest(error.code)
+        }
+        else if (error.code === 'E_NOT_FOUND') {
+          return Boom.notFound(error.code)
+        }
+        else {
+          return Boom.badImplementation(error.code)
+        }
+      })
   }
 
   /**
@@ -127,21 +196,34 @@ export class TapestryController extends Controller {
     const parentId = request.params.parentId
     const childAttribute = request.params.childAttribute
     const childId = request.params.childId
+    let res
 
     this.log.debug('[TapestryController] (findAssociation)',
       parentModel, parentId, '->', childAttribute, childId,
       ', criteria =', request.query)
 
     if (childId) {
-      return TapestryService.findAssociation(
-        parentModel, parentId, childAttribute, childId, _.extend({ findOne: true }, options)
+      res = TapestryService.findAssociation(
+        parentModel, parentId, childAttribute, childId, extend({ findOne: true }, options)
       )
     }
     else {
-      return TapestryService.findAssociation(
+      res = TapestryService.findAssociation(
         parentModel, parentId, childAttribute, criteria, options
       )
     }
+
+    return res.catch(error => {
+      if (error.code === 'E_VALIDATION') {
+        return Boom.badRequest(error.code)
+      }
+      else if (error.code === 'E_NOT_FOUND') {
+        return Boom.notFound(error.code)
+      }
+      else {
+        return Boom.badImplementation(error.code)
+      }
+    })
   }
 
   /**
@@ -155,22 +237,35 @@ export class TapestryController extends Controller {
     const parentId = request.params.parentId
     const childAttribute = request.params.childAttribute
     const childId = request.params.childId
+    let res
 
     this.log.debug('[TapestryController] (updateAssociation)',
       parentModel, parentId, '->', childAttribute, childId,
       ', criteria =', request.query)
 
     if (childId) {
-      return TapestryService.updateAssociation(
+      res = TapestryService.updateAssociation(
         parentModel, parentId, childAttribute, childId,
-        request.payload, _.extend({ findOne: true }, options)
+        request.payload, extend({ findOne: true }, options)
       )
     }
     else {
-      return TapestryService.updateAssociation(
+      res = TapestryService.updateAssociation(
         parentModel, parentId, childAttribute, criteria, request.payload
       )
     }
+
+    return res.catch(error => {
+      if (error.code === 'E_VALIDATION') {
+        return Boom.badRequest(error.code)
+      }
+      else if (error.code === 'E_NOT_FOUND') {
+        return Boom.notFound(error.code)
+      }
+      else {
+        return Boom.badImplementation(error.code)
+      }
+    })
   }
 
   /**
@@ -203,10 +298,20 @@ export class TapestryController extends Controller {
     return response
       .then(result => {
         if (!result) {
-          return Boom.notFound()
+          return Boom.notFound('E_NOT_FOUND')
         }
-
         return result
+      })
+      .catch(error => {
+        if (error.code === 'E_VALIDATION') {
+          return Boom.badRequest(error.code)
+        }
+        else if (error.code === 'E_NOT_FOUND') {
+          return Boom.notFound(error.code)
+        }
+        else {
+          return Boom.badImplementation(error.code)
+        }
       })
   }
 }

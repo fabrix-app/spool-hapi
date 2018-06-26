@@ -1,6 +1,6 @@
 {
   "name": "@fabrix/spool-hapi",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-alpha.2",
   "description": "Spool - Hapi.js. This spool binds the routes compiled in spool-router to a Hapi Server.",
   "scripts": {
     "build": "tsc -p ./lib/tsconfig.release.json",
@@ -50,7 +50,7 @@
     "vision": "^5.3.1"
   },
   "devDependencies": {
-    "@fabrix/fabrix": "^1.0.0-alpha.7",
+    "@fabrix/fabrix": "^1.0.0-alpha.8",
     "@fabrix/lint": "^1.0.0-alpha.3",
     "@fabrix/spool-i18n": "^1.0.0-alpha.6",
     "@fabrix/spool-router": "^1.0.0-alpha.6",
@@ -67,6 +67,10 @@
     "tslint-microsoft-contrib": "~5.0.3",
     "tsutils": "~2.27.1",
     "typescript": "~2.8.1"
+  },
+  "peerDependencies": {
+    "@fabrix/fabrix": "^1.0.0-alpha.8",
+    "@fabrix/spool-router": "^1.0.0-alpha.6"
   },
   "license": "MIT",
   "bugs": {

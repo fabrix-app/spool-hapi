@@ -16,7 +16,7 @@ import * as api  from './api/index'
  * Bind application routes to Hapi.js (from spool-router)
  */
 export class HapiSpool extends ServerSpool {
-  public server
+  public server: Hapi
   public serverConfig
 
   constructor(app) {
@@ -33,12 +33,13 @@ export class HapiSpool extends ServerSpool {
    */
   async validate () {
     // return Validator.validateWebConfig(this.app.config.web)
-    const requiredSpools = ['router']
-    const spools = Object.keys(this.app.config.get('main.spools'))
-
-    if (requiredSpools.some(v => spools.indexOf(v) >= 0)) {
-      return Promise.reject(new Error(`spool-hapi requires spools: ${ requiredSpools.join(', ') }!`))
-    }
+    // const requiredSpools = ['router']
+    // const spools = Object.keys(this.app.config.get('main.spools'))
+    //
+    // if (requiredSpools.some(v => spools.indexOf(v) >= 0)) {
+    //   return Promise.reject(new Error(`spool-hapi requires spools: ${ requiredSpools.join(', ') }!`))
+    // }
+    return Promise.resolve()
   }
 
   configure () {
@@ -68,9 +69,12 @@ export class HapiSpool extends ServerSpool {
     this.app.emit('webserver:http:ready', this.server.listener)
   }
 
+  /**
+   * Stop the Hapi Server
+   */
   async unload () {
     if (this.server) {
-      this.server.stop()
+      await this.server.stop()
     }
   }
 }

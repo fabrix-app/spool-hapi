@@ -4,16 +4,18 @@ const assert = require('assert')
 const supertest = require('supertest')
 
 describe('TapestryController', () => {
-  let request
+  let request, userId
   before(() => {
-    request = supertest('http://localhost:3000')
+    request = supertest('http://localhost:3000/api/v1')
   })
 
   describe('#create', () => {
     it('should insert a record', done => {
       request
         .post('/user')
-        .send({ name: 'createtest1' })
+        .send({
+          name: 'createtest1'
+        })
         .expect(200)
         .end((err, res) => {
           const user = res.body
@@ -22,64 +24,50 @@ describe('TapestryController', () => {
           assert(user.id)
           assert.equal(user.name, 'createtest1')
 
+          userId = user.id
+
+          done(err)
+        })
+    })
+
+    it('should return a validation error', done => {
+      request
+        .post('/user')
+        .send({})
+        .expect(400)
+        .end((err, res) => {
+          // console.log(err, res.body)
+          // const validError = res.body
+          // assert.equal(validError.code, 'E_VALIDATION')
+          // assert.equal(validError.errors.length, 1)
+          // assert.equal(validError.errors[0].path, 'name')
+          // assert.equal(validError.errors[0].message, 'User.name cannot be null')
+          // assert.equal(validError.errors[0].type, 'notNull Violation')
           done(err)
         })
     })
   })
   describe('#find', () => {
-    let userId, roleId
-    before(done => {
-      request
-        .post('/user')
-        .send({ name: 'findtestuser' })
-        .expect(200)
-        .end((err, res) => {
-          if (err) return done(err)
-
-          userId = res.body.id
-          request
-            .post('/user/' + userId + '/roles')
-            .send({ name: 'findtestrole' })
-            .expect(200)
-            .end((err, res) => {
-              roleId = res.body.id
-              done(err)
-            })
-        })
-    })
     it('should find a single record', done => {
       request
         .get('/user/' + userId)
         .expect(200)
         .end((err, res) => {
           const user = res.body
-          assert.equal(user.name, 'findtestuser')
+          assert.equal(user.name, 'createtest1')
           done(err)
         })
     })
     it('should find a set of records', done => {
       request
         .get('/user')
-        .query({ name: 'findtestuser' })
+        .query({
+          name: 'createtest1'
+        })
         .expect(200)
         .end((err, res) => {
           const user = res.body[0]
-          assert.equal(user.name, 'findtestuser')
-          done(err)
-        })
-    })
-    it('should find a single record and populate an association', done => {
-      request
-        .get('/user/' + userId)
-        .query({
-          populate: [ 'roles' ]
-        })
-        .expect(200)
-        .end((err, res) => {
-          const user = res.body
-          assert.equal(user.name, 'findtestuser')
-          assert(user.roles)
-          assert.equal(user.roles[0].id, roleId)
+          assert.equal(user.name, 'createtest1')
           done(err)
         })
     })
@@ -96,7 +84,9 @@ describe('TapestryController', () => {
     beforeEach(done => {
       request
         .post('/user')
-        .send({ name: 'updatetest1' })
+        .send({
+          name: 'updatetest1'
+        })
         .expect(200)
         .end((err, res) => {
           assert.equal(res.body.name, 'updatetest1')
@@ -107,25 +97,27 @@ describe('TapestryController', () => {
     it('should update a single record', done => {
       request
         .put('/user/' + userId)
-        .send({ name: 'updatetest2' })
+        .send({
+          name: 'updatetest2'
+        })
         .expect(200)
         .end((err, res) => {
-          const user = res.body
-          assert.equal(user.id, userId)
-          assert.equal(user.name, 'updatetest2')
+          assert.equal(res.body, 1)
           done(err)
         })
     })
     it('should update a set of records', done => {
       request
         .put('/user')
-        .query({ name: 'updatetest1' })
-        .send({ name: 'updatetest2' })
+        .query({
+          name: 'updatetest1'
+        })
+        .send({
+          name: 'updatetest2'
+        })
         .expect(200)
         .end((err, res) => {
-          const user = res.body[0]
-          assert.equal(user.id, userId)
-          assert.equal(user.name, 'updatetest2')
+          assert.equal(res.body[0], 1)
           done(err)
         })
     })
@@ -135,7 +127,9 @@ describe('TapestryController', () => {
     beforeEach(done => {
       request
         .post('/user')
-        .send({ name: 'destroytest1' })
+        .send({
+          name: 'destroytest1'
+        })
         .expect(200)
         .end((err, res) => {
           assert.equal(res.body.name, 'destroytest1')
@@ -148,21 +142,18 @@ describe('TapestryController', () => {
         .del('/user/' + userId)
         .expect(200)
         .end((err, res) => {
-          const user = res.body
-          assert.equal(user.id, userId)
-          assert.equal(user.name, 'destroytest1')
           done(err)
         })
     })
     it('should destroy a set of records', done => {
       request
         .del('/user')
-        .query({ name: 'destroytest1' })
+        .query({
+          name: 'destroytest1'
+        })
         .expect(200)
         .end((err, res) => {
-          const user = res.body[0]
-          assert.equal(user.id, userId)
-          assert.equal(user.name, 'destroytest1')
+          assert.equal(res.body, 1)
           done(err)
         })
     })
@@ -172,7 +163,9 @@ describe('TapestryController', () => {
     before(done => {
       request
         .post('/user')
-        .send({ name: 'createtest1' })
+        .send({
+          name: 'createtest1'
+        })
         .expect(200)
         .end((err, res) => {
           userId = res.body.id
@@ -182,15 +175,15 @@ describe('TapestryController', () => {
     it('should insert an associated record', done => {
       request
         .post('/user/' + userId + '/roles')
-        .send({ name: 'associatedroletest1' })
+        .send({
+          name: 'associatedroletest1'
+        })
         .expect(200)
         .end((err, res) => {
           const role = res.body
-
-
           assert(role)
           assert.equal(role.name, 'associatedroletest1')
-          assert.equal(role.user, userId)
+          assert.equal(role.userId, userId)
           done(err)
         })
     })
@@ -200,7 +193,9 @@ describe('TapestryController', () => {
     before(done => {
       request
         .post('/user')
-        .send({ name: 'createtest1' })
+        .send({
+          name: 'createtest1'
+        })
         .expect(200)
         .end((err, res) => {
           if (err) return done(err)
@@ -208,7 +203,9 @@ describe('TapestryController', () => {
           userId = res.body.id
           request
             .post('/user/' + userId + '/roles')
-            .send({ name: 'associatedroletest1' })
+            .send({
+              name: 'associatedroletest1'
+            })
             .expect(200)
             .end((err, res) => {
               roleId = res.body.id
@@ -234,16 +231,17 @@ describe('TapestryController', () => {
         .end((err, res) => {
           const roles = res.body
           assert(roles.length)
-          assert.equal(roles[0].user, userId)
+          assert.equal(roles[0].user.id, userId)
           done(err)
         })
     })
-    it.skip('should find a set of associated records ("many") and populate the parent association', done => {
+    it('should find a set of associated records ("many") ' +
+      'and populate the parent association', done => {
       request
         .get('/user/' + userId + '/roles')
         .expect(200)
         .query({
-          populate: [ 'user' ]
+          populate: ['user']
         })
         .end((err, res) => {
           const roles = res.body
@@ -252,6 +250,7 @@ describe('TapestryController', () => {
           done(err)
         })
     })
+
     it('should find a particular record in an associated set ("many")', done => {
       request
         .get('/user/' + userId + '/roles/' + roleId)
@@ -260,7 +259,7 @@ describe('TapestryController', () => {
           const role = res.body
           assert(role)
           assert.equal(role.id, roleId)
-          assert.equal(role.user, userId)
+          assert.equal(role.user.id, userId)
           done(err)
         })
     })
@@ -270,15 +269,20 @@ describe('TapestryController', () => {
     beforeEach(done => {
       request
         .post('/user')
-        .send({ name: 'updateassociationtest1' })
+        .send({
+          name: 'updateassociationtest1'
+        })
         .expect(200)
         .end((err, res) => {
+
           if (err) return done(err)
 
           userId = res.body.id
           request
             .post('/user/' + userId + '/roles')
-            .send({ name: 'associatedroletest2' })
+            .send({
+              name: 'associatedroletest2'
+            })
             .expect(200)
             .end((err, res) => {
               roleId = res.body.id
@@ -294,9 +298,7 @@ describe('TapestryController', () => {
         })
         .expect(200)
         .end((err, res) => {
-          const user = res.body
-          assert(user)
-          assert.equal(user.name, 'updateassociationtest2')
+          assert.equal(res.body, 1)
           done(err)
         })
     })
@@ -310,7 +312,7 @@ describe('TapestryController', () => {
         .end((err, res) => {
           const roles = res.body
           assert(roles.length)
-          assert.equal(roles[0].name, 'updateassociationtest2')
+          assert.equal(roles[0], 1)
           done(err)
         })
     })
@@ -320,7 +322,9 @@ describe('TapestryController', () => {
     beforeEach(done => {
       request
         .post('/user')
-        .send({ name: 'destroyassociationtest1' })
+        .send({
+          name: 'destroyassociationtest1'
+        })
         .expect(200)
         .end((err, res) => {
           if (err) return done(err)
@@ -328,7 +332,9 @@ describe('TapestryController', () => {
           userId = res.body.id
           request
             .post('/user/' + userId + '/roles')
-            .send({ name: 'associatedroletest3' })
+            .send({
+              name: 'associatedroletest3'
+            })
             .expect(200)
             .end((err, res) => {
               roleId = res.body.id
@@ -343,7 +349,7 @@ describe('TapestryController', () => {
         .end((err, res) => {
           if (err) return done(err)
 
-          const user = res.body
+          const user = res.body[0]
           assert(user)
           assert.equal(user.id, userId)
 
@@ -351,12 +357,9 @@ describe('TapestryController', () => {
             .get('/user/' + userId)
             .expect(404)
             .end((err, res) => {
-              if (err) return done(err)
-
-              done()
+              done(err)
             })
         })
     })
   })
 })
-

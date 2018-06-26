@@ -4,7 +4,7 @@ const supertest = require('supertest')
 describe('UserController', () => {
   let request
   before(() => {
-    request = supertest('http://localhost:3000')
+    request = supertest('http://localhost:3000/api/v1')
   })
 
   describe('headers', () => {
