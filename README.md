@@ -89,7 +89,7 @@ module.exports = {
 
   onPluginsLoaded: function (err) {
     // Note that `this` is fabrix `app` instance
-    this.packs.hapi.server.auth.strategy('default', 'hawk', { getCredentialsFunc: getCredentials });
+    this.spools.hapi.server.auth.strategy('default', 'hawk', { getCredentialsFunc: getCredentials });
   }
 }
 ```
