@@ -1,6 +1,6 @@
 {
   "name": "@fabrix/spool-hapi",
-  "version": "1.0.0-alpha.3",
+  "version": "1.0.0-alpha.4",
   "description": "Spool - Hapi.js. This spool binds the routes compiled in spool-router to a Hapi Server.",
   "scripts": {
     "build": "tsc -p ./lib/tsconfig.release.json",
@@ -51,12 +51,12 @@
     "lodash": "^4.17.5"
   },
   "devDependencies": {
-    "@fabrix/fabrix": "^1.0.0-alpha.8",
+    "@fabrix/fabrix": "^1.0.0-alpha.9",
     "@fabrix/lint": "^1.0.0-alpha.3",
     "@fabrix/spool-i18n": "^1.0.0-alpha.6",
-    "@fabrix/spool-router": "^1.0.0-alpha.6",
-    "@fabrix/spool-sequelize": "^1.0.0-alpha.7",
-    "@fabrix/spool-tapestries": "^1.0.0-alpha.7",
+    "@fabrix/spool-router": "^1.0.0-alpha.9",
+    "@fabrix/spool-sequelize": "^1.0.0-alpha.10",
+    "@fabrix/spool-tapestries": "^1.0.0-alpha.9",
     "@types/hapi": "^17.0.12",
     "@types/lodash": "^4.14.109",
     "inert": "^5",
@@ -72,8 +72,8 @@
     "typescript": "~2.8.1"
   },
   "peerDependencies": {
-    "@fabrix/fabrix": "^1.0.0-alpha.8",
-    "@fabrix/spool-router": "^1.0.0-alpha.6"
+    "@fabrix/fabrix": "^1.0.0-alpha.9",
+    "@fabrix/spool-router": "^1.0.0-alpha.9"
   },
   "license": "MIT",
   "bugs": {

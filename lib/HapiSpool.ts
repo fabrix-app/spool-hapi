@@ -33,12 +33,12 @@ export class HapiSpool extends ServerSpool {
    */
   async validate () {
     // return Validator.validateWebConfig(this.app.config.web)
-    // const requiredSpools = ['router']
-    // const spools = Object.keys(this.app.config.get('main.spools'))
-    //
-    // if (requiredSpools.some(v => spools.indexOf(v) >= 0)) {
-    //   return Promise.reject(new Error(`spool-hapi requires spools: ${ requiredSpools.join(', ') }!`))
-    // }
+    const requiredSpools = ['router']
+    const spools = Object.keys(this.app.spools)
+    if (!spools.some(v => requiredSpools.indexOf(v) >= 0)) {
+      return Promise.reject(new Error(`spool-hapi requires spools: ${ requiredSpools.join(', ') }!`))
+    }
+
     return Promise.resolve()
   }
 
