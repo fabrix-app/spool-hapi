@@ -1,3 +1,4 @@
+import { Utils as RouterUtils } from '@fabrix/spool-router'
 import { relative, join } from 'path'
 
 export const Server = {
@@ -31,7 +32,22 @@ export const Server = {
   },
 
   registerRoutes (server, app) {
-    server.route(app.routes)
+    const serverRoutes = []
+
+    app.routes.forEach((route, path)  => {
+      RouterUtils.methods.forEach(m => {
+        if (route[m]) {
+          serverRoutes.push({
+            path: path,
+            method: m,
+            handler: route[m].handler,
+            config: route[m].config
+          })
+        }
+      })
+    })
+
+    server.route(serverRoutes)
 
     if (app.config.get('main.paths.www')) {
       if (Array.isArray(app.config.get('main.paths.www'))) {
