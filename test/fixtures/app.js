@@ -3,7 +3,7 @@
 const _ = require('lodash')
 const smokesignals = require('smokesignals')
 
-const Api = require('./api')
+const Api = require('./api/index')
 const Joi = require('joi')
 
 const App = {
@@ -56,14 +56,14 @@ const App = {
         require('@fabrix/spool-i18n').I18nSpool,
         require('@fabrix/spool-tapestries').TapestriesSpool,
         require('@fabrix/spool-sequelize').SequelizeSpool,
-        require('../dist/index').HapiSpool // spool-hapi
+        require('../../dist/index').HapiSpool // spool-hapi
       ]
     },
     web: {
       port: 3000,
       host: '0.0.0.0'
     },
-    routes: [
+    routes: {
       // {
       //   method: ['GET'],
       //   path: '/',
@@ -254,7 +254,7 @@ const App = {
       // //     }
       // //   }
       // // }
-    ],
+    },
     log: {
       logger: new smokesignals.Logger('debug')
     }

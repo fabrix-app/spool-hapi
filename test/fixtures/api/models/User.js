@@ -1,5 +1,5 @@
 'use strict'
-
+const SequelizeResolver = require('@fabrix/spool-sequelize').SequelizeResolver
 require('@fabrix/fabrix')
 
 /**
@@ -25,8 +25,13 @@ module.exports = class User extends Model {
       }
     }
   }
+
+  static get resolver() {
+    return SequelizeResolver
+  }
+
   //If you need associations, put them here
-  associate (models) {
+  static associate (models) {
     //More information about associations here : http://docs.sequelizejs.com/en/latest/docs/associations/
     models.User.hasMany(models.Role, {
       as: 'roles',
