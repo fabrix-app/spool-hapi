@@ -28,11 +28,11 @@ const App = {
       migrate: 'drop'
     },
     tapestries: {
+      prefix: '/api/v1',
       controllers: {
         ignore: ['DefaultController', 'ViewController', 'StandardController']
       },
       models: {
-
         actions: {
           create: true,
           createWithId: true,
@@ -47,8 +47,7 @@ const App = {
           updateAssociation: true,
           destroyAssociation: true
         }
-      },
-      prefix: '/api/v1'
+      }
     },
     main: {
       spools: [
@@ -71,7 +70,7 @@ const App = {
       //     cors: {
       //       origin: ['https://fabrix.app']
       //     }
-      //   },
+      //   },prefix: '/api/v1'
       //   handler: 'ViewController.helloWorld'
       // }, {
       //   method: ['GET'],

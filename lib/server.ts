@@ -1,5 +1,6 @@
 import { Utils as RouterUtils } from '@fabrix/spool-router'
 import { relative, join } from 'path'
+import { omit } from 'lodash'
 
 export const Server = {
 
@@ -41,7 +42,7 @@ export const Server = {
             path: path,
             method: m,
             handler: route[m].handler,
-            config: route[m].config
+            config: omit(route[m].config, 'prefix')
           })
         }
       })
