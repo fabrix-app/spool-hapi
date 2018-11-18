@@ -1,6 +1,6 @@
 {
   "name": "@fabrix/spool-hapi",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "Spool - Hapi.js. This spool binds the routes compiled in spool-router to a Hapi Server.",
   "scripts": {
     "build": "tsc -p ./lib/tsconfig.release.json",
