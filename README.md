@@ -73,15 +73,15 @@ plugin format. See: http://hapijs.com/tutorials/plugins#loading-a-plugin
 module.exports = {
   plugins: [
     {
-      register: require('vision'),
+      plugin: require('vision'),
       options: { }
     },
     {
-      register: require('inert'),
+      plugin: require('inert'),
       options: { }
     },
     {
-      register: require('hapi-auth-hawk'),
+      plugin: require('hapi-auth-hawk'),
       options: { }
     }
     // ...
