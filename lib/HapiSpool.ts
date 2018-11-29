@@ -6,7 +6,7 @@ import { Validator } from './validator'
 import * as config from './config/index'
 import * as pkg from '../package.json'
 import * as api  from './api/index'
-
+import * as _ from 'lodash'
 /**
  * Hapi spool
  *
@@ -45,12 +45,13 @@ export class HapiSpool extends ServerSpool {
   configure () {
     this.app.config.set('web.server', 'hapi')
     this.app.config.set('web.routes.files.relativeTo', this.app.config.get('main.paths.root'))
+    this.serverConfig = this.app.config.get('web.options');
 
-    this.serverConfig = {
+    _.defaultsDeep(this.serverConfig, {
       host: this.app.config.get('web.host'),
       port: this.app.config.get('web.port'),
       routes: this.app.config.get('web.routes')
-    }
+    })
   }
 
   /**
