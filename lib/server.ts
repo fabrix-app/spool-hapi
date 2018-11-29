@@ -11,8 +11,7 @@ export const Server = {
 
     app.log.debug('spool-hapi: registering', app.config.get('web.plugins').length, 'plugins')
 
-    // await server.register(app.config.get('web.plugins'))
-    await server.register(require('inert'))
+    await server.register(app.config.get('web.plugins'))
 
     if (typeof app.config.get('web.onPluginsLoaded') === 'function') {
       app.config.get('web.onPluginsLoaded').call(app)
