@@ -1,5 +1,5 @@
 'use strict'
-require('@fabrix/fabrix')
+const Service = require('@fabrix/fabrix/dist/common/Service').FabrixService
 /**
    * @module DefaultService
    *

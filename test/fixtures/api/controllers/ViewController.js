@@ -1,5 +1,5 @@
 'use strict'
-require('@fabrix/fabrix')
+const Controller = require('@fabrix/fabrix/dist/common/Controller').FabrixController
 
 module.exports = class ViewController extends Controller{
   helloWorld (request, reply) {
