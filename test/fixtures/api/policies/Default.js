@@ -1,5 +1,5 @@
 'use strict'
-require('@fabrix/fabrix')
+const Policy = require('@fabrix/fabrix/dist/common/Policy').FabrixPolicy
 
 /**
  * @module Default
