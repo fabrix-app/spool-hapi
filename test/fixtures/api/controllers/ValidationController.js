@@ -1,5 +1,5 @@
 'use strict'
-require('@fabrix/fabrix')
+const Controller = require('@fabrix/fabrix/dist/common/Controller').FabrixController
 const Boom = require('boom')
 /**
    * @module DefaultController
