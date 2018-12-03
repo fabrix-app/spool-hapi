@@ -47,6 +47,7 @@ export class HapiSpool extends ServerSpool {
     this.app.config.set('web.routes.files.relativeTo', this.app.config.get('main.paths.root'))
 
     this.serverConfig = {
+      ...this.app.config.get('web.options'),
       host: this.app.config.get('web.host'),
       port: this.app.config.get('web.port'),
       routes: this.app.config.get('web.routes')
