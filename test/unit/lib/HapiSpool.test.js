@@ -7,7 +7,7 @@ const RouterSpool = require('@fabrix/spool-router').RouterSpool
 
 describe('app.spools.HapiSpool', () => {
   let app
-  describe.only('#configure', () => {
+  describe('#configure', () => {
     it('should validate that web.options is set', (done) => {
       app = new FabrixApp({
         pkg: {},
