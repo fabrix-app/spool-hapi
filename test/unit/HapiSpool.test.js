@@ -37,7 +37,7 @@ describe('TapestryController', () => {
   describe('#spool.serverConfig', () => {
     it('should have route cors set to true', () => {
       console.log(app.spools.hapi.serverConfig)
-      assert(app.spools.hapi)
+      assert(app.spools['hapi'])
       assert.equal(app.spools.hapi.serverConfig.routes.cors, true)
     })
   })
