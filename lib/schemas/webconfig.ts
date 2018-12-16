@@ -7,5 +7,6 @@ export const webConfig = joi.object().keys({
   views: joi.object().optional(),
   server: joi.string(),
   options: joi.object().optional(),
-  onPluginsLoaded: joi.func().optional()
-})
+  onPluginsLoaded: joi.func().optional(),
+  router: joi.object().optional(),
+}).unknown()

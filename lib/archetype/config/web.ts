@@ -16,5 +16,10 @@ export const web = {
   /**
    * The host to bind the web server to
    */
-  host: process.env.HOST || '0.0.0.0'
+  host: process.env.HOST || '0.0.0.0',
+
+  /**
+   * Hapi Options
+   */
+  options: {}
 }

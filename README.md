@@ -20,7 +20,7 @@ Load in your spool config.
 
 ```js
 // config/main.js
-module.exports = {
+export const main = {
   // ...
   spools: [
     require('@fabrix/spool-router').RouterSpool,
@@ -34,7 +34,7 @@ Choose a template engine.
 
 ```js
 // config/views.js
-module.exports = {
+export const views = {
   engine: 'handlebars'
 }
 ```
@@ -56,7 +56,6 @@ Hapi.server format. See: http://hapijs.com/api#new-serveroptions
 // config/web.js
 module.exports = {
   options: {
-
     routes: {
       cors: true
     }
